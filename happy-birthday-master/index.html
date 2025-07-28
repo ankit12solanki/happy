@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Happy Birthday</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #fff0f5;
+    }
+
+    .photo-btn,
+    .gift-btn {
+      position: fixed;
+      bottom: 40px;
+      padding: 15px;
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      transition: transform 0.3s ease;
+    }
+
+    .photo-btn {
+      left: 40px;
+      background-color: #e91e63;
+    }
+
+    .gift-btn {
+      right: 40px;
+      background-color: #ff4081;
+    }
+
+    .photo-btn:hover,
+    .gift-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .photo-section {
+      display: none;
+      text-align: center;
+      padding: 30px 10px;
+    }
+
+    .photo-gallery img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      margin: 10px;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .photo-gallery img:hover {
+      transform: scale(1.05);
+    }
+
+    .photo-section h3 {
+      color: #e91e63;
+      font-size: 36px;
+      font-weight: bold;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+      margin-bottom: 30px;
+      animation: popText 1s ease-out;
+    }
+
+    @keyframes popText {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Popup Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      padding-top: 100px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: auto;
+      padding: 30px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="loader">
+        <button id="play">Start</button>
+      </div>
+    </div>
+  </div>
+
+  <audio class="song" controls loop>
+    <source src="music.mp3">
+    Your browser isn't invited for super fun audio time.
+  </audio>
+
+  <canvas id="confetti"></canvas>
+
+  <div class="main">
+    <div class="container pt-5">
+      <div class="row">
+
+        <div class="col-12 col-xl-6 mx-auto">
+          <img src="img/banner.png" alt="">
+        </div>
+
+        <div class="col-12  text-center">
+          <div id="name" class="area">Ritu ma'am</div>
+        </div>
+
+        <div class="col-12 text-center">
+          <div class="type-wrap">
+            <div id="typed-strings" class="typing">
+              <h2>Happy Birthday <i id="nae">Ritu ma'am</i></h2>
+              <h2>Have a wonderful day</h2>
+              <h2>Filled with joy and happiness.</h2>
+            </div>
+            <span id="typed" style="white-space:pre;"></span>
+          </div>
+        </div>
+
+        <div class="col-12 col-xl-3 cake">
+          <img src="img/cake.gif" alt="">
+        </div>
+
+        <!-- 🖼️ Photos Section -->
+        <div class="col-12 photo-section" id="photos">
+          <h3>📸 Some Memories</h3>
+          <div class="photo-gallery">
+            <img src="asus.jpg" alt="Photo 1">
+            <img src="hacker pic 2.png" alt="Photo 2">
+            <img src="hacker pic.jpg" alt="Photo 3">
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <img src="img/Balloon-Border.png" width="100%" class="balloon-border">
+  </div>
+
+  <!-- 📸 Photo Toggle Button -->
+  <button class="photo-btn" onclick="togglePhotos()">📸</button>
+
+  <!-- 🎁 Surprise Gift Button -->
+  <button class="gift-btn" onclick="showGiftPopup()">🎁</button>
+
+  <!-- 🎁 Modal Popup -->
+  <div id="giftModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeGiftPopup()">&times;</span>
+      <h2>🎉 Surprise Gift for Ritu Ma'am 🎉</h2>
+      <img src="cake.gif" alt="Gift" style="width: 200px;">
+      <p style="margin-top: 20px;">Wishing you all the happiness and surprises life can offer! 💝</p>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/magic-snowflakes/dist/snowflakes.min.js"></script>
+  <script src="js/jquery.js"></script>
+  <script src="js/typed.min.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    function togglePhotos() {
+      const section = document.getElementById("photos");
+      if (section.style.display === "none" || section.style.display === "") {
+        section.style.display = "block";
+        section.scrollIntoView({ behavior: "smooth" });
+      } else {
+        section.style.display = "none";
+      }
+    }
+
+    function showGiftPopup() {
+      document.getElementById("giftModal").style.display = "block";
+    }
+
+    function closeGiftPopup() {
+      document.getElementById("giftModal").style.display = "none";
+    }
+
+    // Close the modal when clicking outside the modal content
+    window.onclick = function(event) {
+      const modal = document.getElementById("giftModal");
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+</body>
+
+</html>
